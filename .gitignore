@@ -7,6 +7,8 @@
 
 coveragereport
 
+checkPercentCoverage.sh
+
 # User-specific files
 *.rsuser
 *.suo

@@ -40,11 +40,6 @@ jobs:
     - name: Copiar arquivos do diretório ./coveragereport para relatorioTestes
       run: cp coveragereport/* relatorioTestes/reportCodeCoverage
 
-    - name: Permição para shell script
-      run: | 
-        chmod +x checkPercentCoverage.sh
-        env.COVERAGE=`./checkPercentCoverage.sh`
-
     - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
       env:
         CAMINHO_RESULTADO_TESTES: ./relatorioTestes
@@ -52,7 +47,7 @@ jobs:
       uses: actions/upload-artifact@v3
       if: success()
       with:
-        name: reportCodeCoverage-${{ env.COVERAGE }}%
+        name: reportCoverage
         path: ${{ env.CAMINHO_RESULTADO_TESTES }}
         retention-days: 30
     
