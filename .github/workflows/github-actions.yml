@@ -40,10 +40,12 @@ jobs:
       run: cp coveragereport/* relatorioTestes/reportCodeCoverage
 
     - name: Permição para shell script
-      run: chmod 755 checkPercentCoverage.sh
+      run: | 
+        chmod +x checkPercentCoverage.sh
+        COVERAGE=`./checkPercentCoverage.sh`
 
     - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
-      run: COVERAGE=`./checkPercentCoverage.sh`
+      # run: COVERAGE=`./checkPercentCoverage.sh`
       env:
         CAMINHO_RESULTADO_TESTES: ./relatorioTestes
       
