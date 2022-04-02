@@ -36,7 +36,7 @@ jobs:
     - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
       uses: actions/upload-artifact@v2.2.2
       env:
-        CAMINHO_RESULTADO_TESTES: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/
+        CAMINHO_RESULTADO_TESTES: ./coveragereport
       if: success()
       with:
         name: resultado-testes
