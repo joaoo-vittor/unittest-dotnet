@@ -1,0 +1,31 @@
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --no-restore
+    
+    - name: Code Coverage
+      run: dotnet test **/*Tests.csproj --verbosity detailed --collect:"XPlat Code Coverage" --settings **/runsettings.xml
+    
+    - name: Install ReportGenerator
+      if: success()
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+    - name: Gerar relatório de cobertura de testes com ReportGenerator
+      if: success()
+      run: reportgenerator "-reports:**/TestResults/**/coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
+
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal
