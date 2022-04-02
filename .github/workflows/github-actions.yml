@@ -50,7 +50,7 @@ jobs:
       uses: actions/upload-artifact@v3
       if: success()
       with:
-        name: reportCodeCoverage-${{ COVERAGE }}%
+        name: "reportCodeCoverage-$COVERAGE%"
         path: ${{ env.CAMINHO_RESULTADO_TESTES }}
         retention-days: 30
     
