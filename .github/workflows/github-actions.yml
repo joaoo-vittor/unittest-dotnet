@@ -39,14 +39,18 @@ jobs:
     - name: Copiar arquivos do diretório ./coveragereport para relatorioTestes
       run: cp coveragereport/* relatorioTestes/reportCodeCoverage
 
+    - name: Permição para shell script
+      run: chmod 755 checkPercentCoverage.sh
+
     - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
+      run: COVERAGE=`./checkPercentCoverage.sh`
       env:
         CAMINHO_RESULTADO_TESTES: ./relatorioTestes
       
       uses: actions/upload-artifact@v3
       if: success()
       with:
-        name: resultado-testes
+        name: reportCodeCoverage-${{ COVERAGE }}%
         path: ${{ env.CAMINHO_RESULTADO_TESTES }}
         retention-days: 30
     
@@ -59,6 +63,3 @@ jobs:
         name: resultado-erros-testes
         path: ${{ env.CAMINHO_RELATORIO_ERROS }}
         retention-days: 30
-
-    # - name: Test
-    #   run: dotnet test --no-build --verbosity normal
