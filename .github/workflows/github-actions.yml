@@ -3,6 +3,7 @@ on: [push]
 
 env:
   CAMINHO_PROJETO_TESTES: ./SistemaVendas.UnitTests
+  COVERAGE: 0
 
 jobs:
   build:
@@ -45,7 +46,6 @@ jobs:
         COVERAGE=`./checkPercentCoverage.sh`
 
     - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
-      # run: COVERAGE=`./checkPercentCoverage.sh`
       env:
         CAMINHO_RESULTADO_TESTES: ./relatorioTestes
       
