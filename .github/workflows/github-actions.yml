@@ -1,6 +1,9 @@
 name: gerar cobertura de teste
 on: [push]
 
+env:
+  CAMINHO_PROJETO_TESTES: ./SistemaVendas.UnitTests
+
 jobs:
   build:
 
@@ -20,7 +23,7 @@ jobs:
       run: dotnet build --no-restore
     
     - name: Code Coverage
-      run: dotnet test **/*Tests.csproj --verbosity detailed --collect:"XPlat Code Coverage" --settings **/runsettings.xml
+      run: dotnet test ${{ env.CAMINHO_PROJETO_TESTES }} --verbosity detailed --collect:"XPlat Code Coverage" --settings **/runsettings.xml
     
     - name: Install ReportGenerator
       if: success()
@@ -29,6 +32,26 @@ jobs:
     - name: Gerar relatório de cobertura de testes com ReportGenerator
       if: success()
       run: reportgenerator "-reports:**/TestResults/**/coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
+
+    - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
+      uses: actions/upload-artifact@v2.2.2
+      env:
+        CAMINHO_RESULTADO_TESTES: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/
+      if: success()
+      with:
+        name: resultado-testes
+        path: ${{ env.CAMINHO_RESULTADO_TESTES }}
+        retention-days: 30
+    
+    - name: Upload como Artifact do Report de Testes com Falhas
+      uses: actions/upload-artifact@v2.2.2
+      if: failure()
+      env:
+        CAMINHO_RELATORIO_ERROS: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/resultado-testes.html
+      with:
+        name: resultado-erros-testes
+        path: ${{ env.CAMINHO_RELATORIO_ERROS }}
+        retention-days: 30
 
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal
