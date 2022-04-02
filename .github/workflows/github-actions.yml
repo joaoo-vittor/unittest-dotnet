@@ -43,7 +43,7 @@ jobs:
     - name: Permição para shell script
       run: | 
         chmod +x checkPercentCoverage.sh
-        COVERAGE=`./checkPercentCoverage.sh`
+        env.COVERAGE=`./checkPercentCoverage.sh`
 
     - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
       env:
